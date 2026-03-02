@@ -1,28 +1,28 @@
 {
-  "name": "omnisite",
-  "version": "1.0.0",
-  "description": "��#\u0000 \u0000O\u0000m\u0000n\u0000i\u0000S\u0000i\u0000t\u0000e\u0000 \u0000 \u0000O\u0000m\u0000n\u0000i\u0000S\u0000i\u0000t\u0000e\u0000 \u0000�\u0000 \u0000u\u0000n\u0000 \u0000p\u0000r\u0000o\u0000g\u0000e\u0000t\u0000t\u0000o\u0000 \u0000i\u0000n\u0000 \u0000f\u0000a\u0000s\u0000e\u0000 \u0000i\u0000n\u0000i\u0000z\u0000i\u0000a\u0000l\u0000e\u0000.\u0000 \u0000Q\u0000u\u0000i\u0000 \u0000t\u0000r\u0000o\u0000v\u0000i\u0000 \u0000l\u0000e\u0000 \u0000i\u0000n\u0000f\u0000o\u0000r\u0000m\u0000a\u0000z\u0000i\u0000o\u0000n\u0000i\u0000 \u0000b\u0000a\u0000s\u0000e\u0000 \u0000p\u0000e\u0000r\u0000 \u0000a\u0000v\u0000v\u0000i\u0000a\u0000r\u0000e\u0000 \u0000e\u0000 \u0000c\u0000o\u0000n\u0000t\u0000r\u0000i\u0000b\u0000u\u0000i\u0000r\u0000e\u0000.\u0000\r\u0000 \u0000",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs",
-    "test": "tests"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/giampy2/OmniSite.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/giampy2/OmniSite/issues"
-  },
-  "homepage": "https://github.com/giampy2/OmniSite#readme",
-  "dependencies": {
-    "express": "^5.2.1"
-  }
+    "name": "omnisite",
+    "version": "1.0.0",
+    "description": "ï¿½ï¿½#\u0000 \u0000O\u0000m\u0000n\u0000i\u0000S\u0000i\u0000t\u0000e\u0000 \u0000 \u0000O\u0000m\u0000n\u0000i\u0000S\u0000i\u0000t\u0000e\u0000 \u0000ï¿½\u0000 \u0000u\u0000n\u0000 \u0000p\u0000r\u0000o\u0000g\u0000e\u0000t\u0000t\u0000o\u0000 \u0000i\u0000n\u0000 \u0000f\u0000a\u0000s\u0000e\u0000 \u0000i\u0000n\u0000i\u0000z\u0000i\u0000a\u0000l\u0000e\u0000.\u0000 \u0000Q\u0000u\u0000i\u0000 \u0000t\u0000r\u0000o\u0000v\u0000i\u0000 \u0000l\u0000e\u0000 \u0000i\u0000n\u0000f\u0000o\u0000r\u0000m\u0000a\u0000z\u0000i\u0000o\u0000n\u0000i\u0000 \u0000b\u0000a\u0000s\u0000e\u0000 \u0000p\u0000e\u0000r\u0000 \u0000a\u0000v\u0000v\u0000i\u0000a\u0000r\u0000e\u0000 \u0000e\u0000 \u0000c\u0000o\u0000n\u0000t\u0000r\u0000i\u0000b\u0000u\u0000i\u0000r\u0000e\u0000.\u0000\r\u0000 \u0000",
+    "main": "index.js",
+    "directories": {
+        "doc": "docs",
+        "test": "tests"
+    },
+    "scripts": {
+        "start": "node src/index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/giampy2/OmniSite.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs",
+    "bugs": {
+        "url": "https://github.com/giampy2/OmniSite/issues"
+    },
+    "homepage": "https://github.com/giampy2/OmniSite#readme",
+    "dependencies": {
+        "express": "^5.2.1"
+    }
 }
