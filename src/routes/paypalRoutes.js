@@ -1,8 +1,9 @@
-const express = require('express');
-const router = express.Router();
-const paypalController = require('../controllers/paypalController');
+const express = require("express");
+const { create, capture } = require("../controllers/paypalController");
 
-router.post('/create-order', paypalController.createOrder);
-router.post('/capture-order', paypalController.captureOrder);
+const router = express.Router();
+
+router.post("/create-order", create);
+router.post("/capture-order/:orderId", capture);
 
 module.exports = router;

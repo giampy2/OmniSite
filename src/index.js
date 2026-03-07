@@ -17,7 +17,7 @@ app.use(express.json());
 
 // Rotta base
 app.get('/', (req, res) => {
-  res.json({ message: 'OmniSite API attiva in locale' });
+  res.json({ message: 'OmniSite API attiva' });
 });
 
 // Rotte API
@@ -27,9 +27,8 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/paypal', paypalRoutes); // PayPal
 
 // Avvio server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server avviato sulla porta ${PORT}`);
 });
-console.log("Redeploy test " + Date.now());
 
