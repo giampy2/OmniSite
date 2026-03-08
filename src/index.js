@@ -1,24 +1,33 @@
 ﻿const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const mongoose = require("mongoose");
 
 // Stripe
 const Stripe = require("stripe");
 const stripe = Stripe(process.env.STRIPE_SECRET);
 
+// Express
 const app = express();
-
-// Middleware globali
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+
+// MongoDB
+mongoose.connect(process.env.MONGO_URL)
+  .then(() => console.log("MongoDB connesso"))
+  .catch(err => console.error("Errore MongoDB:", err));
 
 // Rotta base
 app.get('/', (req, res) => {
   res.json({ message: 'OmniSite API attiva' });
 });
 
-// 🔥 ROUTE STRIPE CHECKOUT (UNICA ROUTE DI PAGAMENTO)
+// Auth + Users
+app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
+
+// Stripe Checkout
 app.post("/api/checkout", async (req, res) => {
   try {
     const session = await stripe.checkout.sessions.create({
@@ -29,7 +38,7 @@ app.post("/api/checkout", async (req, res) => {
           price_data: {
             currency: "eur",
             product_data: { name: "OmniSite Pro" },
-            unit_amount: 9900, // 99,00€
+            unit_amount: 9900,
           },
           quantity: 1,
         },
@@ -47,6 +56,4 @@ app.post("/api/checkout", async (req, res) => {
 
 // Avvio server
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server avviato sulla porta ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server avviato sulla porta ${PORT}`));

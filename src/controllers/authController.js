@@ -1,53 +1,46 @@
-// controllers/authController.js
+const User = require("../models/User");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
-const { registerUser, loginUser } = require('../services/userService');
-const jwt = require('jsonwebtoken');
-
-const JWT_SECRET = process.env.JWT_SECRET || "supersegreto";
-
-// Registrazione
 exports.register = async (req, res) => {
   try {
-    const { email, password, role } = req.body;
-    const user = await registerUser(email, password, role);
+    const { email, password } = req.body;
+
+    const exists = await User.findOne({ email });
+    if (exists) return res.status(400).json({ error: "Email già registrata" });
+
+    const hashed = await bcrypt.hash(password, 10);
+
+    const user = await User.create({ email, password: hashed });
+
     res.json({ message: "Registrazione completata", user });
   } catch (err) {
-    console.error("Errore register:", err);
-    res.status(err.status || 500).json({ error: err.message });
+    res.status(500).json({ error: "Errore server" });
   }
 };
 
-// Login
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const data = await loginUser(email, password);
-    res.json(data);
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ error: "Credenziali errate" });
+
+    const ok = await bcrypt.compare(password, user.password);
+    if (!ok) return res.status(400).json({ error: "Credenziali errate" });
+
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.json({ token, user });
   } catch (err) {
-    console.error("Errore login:", err);
-    res.status(err.status || 500).json({ error: err.message });
+    res.status(500).json({ error: "Errore server" });
   }
 };
 
-// Info utente loggato
 exports.me = async (req, res) => {
-  try {
-    const token = req.headers.authorization?.split(" ")[1];
-
-    if (!token) {
-      return res.status(401).json({ error: "Token mancante" });
-    }
-
-    const decoded = jwt.verify(token, JWT_SECRET);
-
-    res.json({
-      id: decoded.id,
-      email: decoded.email,
-      role: decoded.role
-    });
-
-  } catch (err) {
-    console.error("Errore me:", err);
-    res.status(401).json({ error: "Token non valido" });
-  }
+  res.json({ user: req.user });
 };

@@ -1,11 +1,12 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
+const auth = require("../middleware/authMiddleware");
+const { profile, updateProfile, listUsers } = require("../controllers/userController");
 
-const { authRequired, adminOnly } = require('../middleware/auth');
-const userController = require('../controllers/userController');
-
-// Lista utenti (solo admin)
-router.get('/', authRequired, adminOnly, userController.listUsers);
+router.get("/profile", auth, profile);
+router.put("/profile", auth, updateProfile);
+router.get("/", auth, listUsers);
 
 module.exports = router;
+
 
