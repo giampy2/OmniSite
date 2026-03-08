@@ -1,35 +1,53 @@
-const { registerUser, loginUser } = require('../services/userService');
+// controllers/authController.js
 
-async function register(req, res, next) {
+const { registerUser, loginUser } = require('../services/userService');
+const jwt = require('jsonwebtoken');
+
+const JWT_SECRET = process.env.JWT_SECRET || "supersegreto";
+
+// Registrazione
+exports.register = async (req, res) => {
   try {
     const { email, password, role } = req.body;
     const user = await registerUser(email, password, role);
-    res.status(201).json(user);
+    res.json({ message: "Registrazione completata", user });
   } catch (err) {
-    next(err);
+    console.error("Errore register:", err);
+    res.status(err.status || 500).json({ error: err.message });
   }
-}
+};
 
-async function login(req, res, next) {
+// Login
+exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const result = await loginUser(email, password);
-    res.json(result);
+    const data = await loginUser(email, password);
+    res.json(data);
   } catch (err) {
-    next(err);
+    console.error("Errore login:", err);
+    res.status(err.status || 500).json({ error: err.message });
   }
-}
+};
 
-async function me(req, res) {
-  res.json({
-    id: req.user.id,
-    email: req.user.email,
-    role: req.user.role
-  });
-}
+// Info utente loggato
+exports.me = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
 
-module.exports = {
-  register,
-  login,
-  me
+    if (!token) {
+      return res.status(401).json({ error: "Token mancante" });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    res.json({
+      id: decoded.id,
+      email: decoded.email,
+      role: decoded.role
+    });
+
+  } catch (err) {
+    console.error("Errore me:", err);
+    res.status(401).json({ error: "Token non valido" });
+  }
 };

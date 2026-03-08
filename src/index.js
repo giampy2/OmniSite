@@ -2,11 +2,9 @@
 const cors = require('cors');
 const helmet = require('helmet');
 
-// Rotte
-const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes');
-const adminRoutes = require('./routes/adminRoutes');
-const paypalRoutes = require('./routes/paypalRoutes'); // PayPal
+// Stripe
+const Stripe = require("stripe");
+const stripe = Stripe(process.env.STRIPE_SECRET);
 
 const app = express();
 
@@ -20,15 +18,35 @@ app.get('/', (req, res) => {
   res.json({ message: 'OmniSite API attiva' });
 });
 
-// Rotte API
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/paypal', paypalRoutes); // PayPal
+// 🔥 ROUTE STRIPE CHECKOUT (UNICA ROUTE DI PAGAMENTO)
+app.post("/api/checkout", async (req, res) => {
+  try {
+    const session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          price_data: {
+            currency: "eur",
+            product_data: { name: "OmniSite Pro" },
+            unit_amount: 9900, // 99,00€
+          },
+          quantity: 1,
+        },
+      ],
+      success_url: "https://tuodominio.com/success",
+      cancel_url: "https://tuodominio.com/cancel",
+    });
+
+    res.json({ url: session.url });
+  } catch (err) {
+    console.error("Errore Stripe:", err);
+    res.status(500).json({ error: "Errore Stripe" });
+  }
+});
 
 // Avvio server
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server avviato sulla porta ${PORT}`);
 });
-

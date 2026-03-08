@@ -5,6 +5,7 @@ const users = []; // Per ora in memoria, poi lo spostiamo su DB
 
 const JWT_SECRET = process.env.JWT_SECRET || "supersegreto";
 
+// Registrazione utente
 async function registerUser(email, password, role = "user") {
   const existing = users.find(u => u.email === email);
   if (existing) {
@@ -14,6 +15,7 @@ async function registerUser(email, password, role = "user") {
   }
 
   const hashed = await bcrypt.hash(password, 10);
+
   const user = {
     id: users.length + 1,
     email,
@@ -26,6 +28,7 @@ async function registerUser(email, password, role = "user") {
   return { id: user.id, email: user.email, role: user.role };
 }
 
+// Login utente
 async function loginUser(email, password) {
   const user = users.find(u => u.email === email);
   if (!user) {
@@ -50,8 +53,13 @@ async function loginUser(email, password) {
   return { token, user: { id: user.id, email: user.email, role: user.role } };
 }
 
+// Lista utenti (solo admin)
 function listUsers() {
-  return users.map(u => ({ id: u.id, email: u.email, role: u.role }));
+  return users.map(u => ({
+    id: u.id,
+    email: u.email,
+    role: u.role
+  }));
 }
 
 module.exports = {
