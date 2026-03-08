@@ -31,7 +31,8 @@
     "cors": "^2.8.5",
     "express": "^5.2.1",
     "helmet": "^7.0.0",
-    "jsonwebtoken": "^9.0.3"
+    "jsonwebtoken": "^9.0.3",
+    "stripe": "^20.4.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
